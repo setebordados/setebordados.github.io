@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sete Bordados - Bordados Computadorizados</title>
+    <style>
+:root {
+  --primary: #1A1A1A;
+  --bg-dark: #122810;
+  --bg-nav: #EBEAE5;
+  --bg-services: #7F8B7B;
+  --bg-gallery: #AC918A;
+  --bg-about: #DEDAD6;
+  --text-light: #FFFFFF;
+  --text-dark: #222222;
+  --accent: #25D366; /* WhatsApp Green */
+  --highlight: #D8B2A7;
+
+  --font-main: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-dark);
+  background-color: var(--bg-nav);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+}
+
+/* Animations */
+[data-anime] {
+  opacity: 0;
+  transition: .8s ease-in-out;
+}
+[data-anime="left"] {
+  transform: translateX(-50px);
+}
+[data-anime="right"] {
+  transform: translateX(50px);
+}
+[data-anime="bottom"] {
+  transform: translateY(50px);
+}
+[data-anime].animate {
+  opacity: 1;
+  transform: translate3d(0px,0px,0px);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--bg-nav);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 2rem;
+  font-weight: normal;
+  color: var(--bg-dark);
+  font-family: "Old English Text MT", "Engravers Old English BT", serif;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--bg-dark);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--bg-gallery);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--bg-gallery);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.mobile-menu-btn {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 80px;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  width: 100%;
+  z-index: 2;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.main-logo-img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(255,255,255,0.1);
+  filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.main-logo-img:hover {
+  transform: scale(1.05);
+}
+
+.hero-text {
+  flex: 1;
+  color: var(--text-light);
+}
+
+.hero-text h1 {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 5px;
+}
+
+.hero-text h2 {
+  font-size: 1.8rem;
+  color: var(--highlight);
+  font-weight: 600;
+  font-style: italic;
+  margin-bottom: 40px;
+  font-family: var(--font-serif);
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: #FFFFFF;
+  color: #000;
+  text-decoration: none;
+  padding: 15px 35px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--highlight);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(216, 178, 167, 0.3);
+  transform: translateY(-3px);
+}
+
+.wave-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(130% + 1.3px);
+  height: 60px;
+}
+
+.wave-divider .shape-fill {
+  fill: var(--bg-services);
+}
+
+/* Services (New Grid Layout) */
+.services-section {
+  background-color: #F4F5F7;
+  padding: 100px 0;
+  color: var(--text-dark);
+}
+
+.section-title-wrapper {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title-wrapper .section-title {
+  font-size: 2.8rem;
+  color: #111e25;
+  margin-bottom: 15px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background-color: #FFC107;
+  margin: 0 auto;
+}
+
+.services-grid-blocks {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.service-quadrant {
+  flex: 1;
+}
+
+.service-quadrant h3 {
+  font-size: 2rem;
+  color: #111e25;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.quadrant-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.service-card {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.service-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 4px solid #FFC107;
+  display: block;
+}
+
+.card-text {
+  padding: 20px;
+}
+
+.card-text h4 {
+  font-size: 1.2rem;
+  color: #111e25;
+  margin-bottom: 8px;
+}
+
+.card-text p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.section-title {
+  font-size: 3rem;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.section-title.dark-title {
+  color: var(--bg-dark);
+}
+
+.whatsapp-btn-wrapper {
+  margin-top: 40px;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  gap: 15px;
+  transition: all 0.3s;
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--accent);
+  box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+  transform: translateY(-3px);
+}
+
+.btn-whatsapp i {
+  font-size: 2.5rem;
+  color: var(--accent);
+}
+
+.btn-whatsapp:hover i {
+  color: #fff;
+}
+
+.wpp-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.wpp-sub {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.wpp-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* Gallery */
+.gallery-section {
+  background-color: var(--bg-dark);
+  padding: 100px 0;
+  text-align: center;
+}
+
+.gallery-slider {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.gallery-track-container {
+  overflow: hidden;
+  flex: 1;
+  border-radius: 10px;
+}
+
+.gallery-track {
+  display: flex;
+  list-style: none;
+  transition: transform 0.5s ease-in-out;
+}
+
+.gallery-slide {
+  min-width: 100%;
+}
+
+.gallery-slide img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.slider-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.slider-btn:hover {
+  color: #333;
+}
+
+/* About Us */
+.about-section {
+  background-color: #ffffff;
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+.sobre-text {
+  flex: 1;
+}
+
+.sobre-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  color: var(--bg-dark);
+  font-weight: 600;
+}
+
+.sobre-graphic {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.watermark-img {
+  width: 450px;
+  opacity: 0.15;
+  filter: grayscale(100%);
+}
+
+/* FAQ */
+.faq-section {
+  background-color: var(--bg-dark);
+  padding: 100px 0;
+  color: var(--text-light);
+}
+
+.center-title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.faq-container {
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.faq-accordion {
+  flex: 1;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+.faq-item {
+  padding: 20px 30px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+  color: #888;
+  font-weight: 600;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item:hover {
+  background-color: rgba(255,255,255,0.05);
+  color: #ddd;
+}
+
+.faq-item.active {
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  border-left: 4px solid #fff;
+}
+
+.faq-display {
+  flex: 1.5;
+  padding: 40px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.faq-answer-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+  background-color: #111;
+  color: #666;
+  text-align: center;
+  padding: 20px 0;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-content, .services-content, .about-content, .faq-container {
+    flex-direction: column;
+  }
+  
+  .hero-image {
+    order: -1;
+  }
+  
+  .main-logo-img {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .hero-text h1 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  
+  .hero-text h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .hero-text .btn-primary {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    width: fit-content;
+  }
+
+  .nav-links {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .services-grid-blocks {
+    flex-direction: column;
+  }
+  
+  .quadrant-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .faq-accordion {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+}
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>Sete Bordados</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#servicos">SERVIÇOS</a></li>
+                    <li><a href="#galeria">GALERIA</a></li>
+                    <li><a href="#sobre">SOBRE NÓS</a></li>
+                    <li><a href="#contato">CONTATO</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-bg-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-image" data-anime="left">
+                <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/8d56ee61-d3b2-42f8-826c-46ac533d7879/media__1777086270051.png"
+                    alt="Sete Bordados Logo" class="main-logo-img"
+                    style="border-radius: 50%; box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.4); filter: none;">
+            </div>
+            <div class="hero-text" data-anime="right">
+                <h1 style="font-size: 4rem;">Sete Bordados</h1>
+                <h2
+                    style="font-size: 2rem; color: #fff; font-style: normal; font-family: var(--font-main); font-weight: 700; margin-bottom: 5px;">
+                    Bordados Computadorizados</h2>
+                <h2 style="font-size: 1.8rem; color: var(--highlight);">e Loja no Elo7</h2>
+                <a href="#contato" class="btn-primary" style="margin-top: 20px;">Clique Aqui e Saiba Mais</a>
+            </div>
+        </div>
+        <div class="wave-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118,137.93,121,206.13,107.82,246.3,100,287.1,80.19,321.39,56.44Z"
+                    class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Serviços Section -->
+    <section id="servicos" class="services-section">
+        <div class="container">
+            <div class="section-title-wrapper" data-anime="bottom">
+                <h2 class="section-title">Nossos Serviços</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="services-grid-blocks">
+                <!-- Quadrante 1 -->
+                <div class="service-quadrant" data-anime="left">
+                    <h3>Desenvolvimento de Matrizes</h3>
+                    <div class="quadrant-cards">
+                        <div class="service-card">
+                            <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/8d56ee61-d3b2-42f8-826c-46ac533d7879/media__1777087668010.png"
+                                alt="Criação de Matriz">
+                            <div class="card-text">
+                                <h4>Criação de Matriz</h4>
+                                <p>Desenvolvimento preciso e personalizado no melhor software do mercado.</p>
+                            </div>
+                        </div>
+                        <a href="https://www.elo7.com.br/setebordados" target="_blank"
+                            style="text-decoration: none; display: block;">
+                            <div class="service-card">
+                                <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777677798168.png"
+                                    alt="Loja no Elo7">
+                                <div class="card-text">
+                                    <h4>Loja no Elo7</h4>
+                                    <p>Compre nossas matrizes exclusivas prontas para uso direto na nossa loja.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quadrante 2 -->
+                <div class="service-quadrant" data-anime="right">
+                    <h3>Bordados em Geral</h3>
+                    <div class="quadrant-cards">
+                        <div class="service-card">
+                            <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678162874.png"
+                                alt="Uniformes e Camisas">
+                            <div class="card-text">
+                                <h4>Uniformes Corporativos</h4>
+                                <p>Padronização e beleza para sua equipe.</p>
+                            </div>
+                        </div>
+                        <div class="service-card">
+                            <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678543180.png"
+                                alt="Bordados Diversos">
+                            <div class="card-text">
+                                <h4>Bordados Diversos</h4>
+                                <p>Bordamos nos mais variados tecidos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="whatsapp-btn-wrapper" style="text-align: center; margin-top: 60px;" data-anime="bottom">
+                <a href="https://wa.me/message/SFWPDJLVIP6OA1" class="btn-whatsapp" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <div class="wpp-text">
+                        <span class="wpp-sub">SOLICITE UM ORÇAMENTO VIA WHATSAPP</span>
+                        <span class="wpp-num">11 95251-6971</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria Section -->
+    <section id="galeria" class="gallery-section">
+        <h2 class="section-title light-title" style="color: #ffffff;" data-anime="bottom">GALERIA</h2>
+        <div class="container gallery-slider" data-anime="bottom">
+            <button class="slider-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="gallery-track-container">
+                <ul class="gallery-track">
+                    <li class="gallery-slide current-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678162874.png"
+                            alt="Camisa Bordada">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678543180.png"
+                            alt="Bordados Diversos">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678162874.png"
+                            alt="Uniforme Bordado">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678753236.png"
+                            alt="Polos Pretas Bordadas">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678794024.png"
+                            alt="Polo Vermelha Mulher Maravilha">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678805522.png"
+                            alt="Toalhas Madrinha Adriana">
+                    </li>
+                    <li class="gallery-slide">
+                        <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777678815977.png"
+                            alt="Toalhas Ivanildo e Lucineide">
+                    </li>
+                </ul>
+            </div>
+            <button class="slider-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Sobre Nós Section -->
+    <section id="sobre" class="about-section">
+        <div class="container about-content">
+            <div class="sobre-text" data-anime="left">
+                <h2 class="section-title dark-title">SOBRE NÓS</h2>
+                <div class="text-block">
+                    <p>Começamos em 2023 fazendo primeiramente Programações de bordado, em casa, mas o sonho era ter uma
+                        produção de bordado.</p>
+                    <p>Aos poucos fomos crescendo, mudamos para um espaço melhor, adquirindo um maquinário e expandindo
+                        em mais tipos de serviços prestados.</p>
+                    <p>Hoje somos umas das principais empresas de bordados computadorizados da região.</p>
+                    <p>Passamos a fazer além da prestação de serviços de programas e bordados, a produção de camisetas
+                        bordadas para empresas.</p>
+                    <p>Nossa missão buscar sempre atender a necessidade do cliente de maneira eficaz e adequada ao item
+                        a ser bordado, fornecendo sempre um resultado bonito e de qualidade.</p>
+                </div>
+            </div>
+            <div class="sobre-graphic" data-anime="right">
+                <div>
+                    <img src="file:///C:/Users/Sete%20Bordados/.gemini/antigravity/brain/af2592d1-7823-4676-9149-f74d1d5712ac/media__1777679221291.png"
+                        alt="Máquinas de Bordado Sete Bordados" class="machine-img"
+                        style="width: 100%; max-width: 500px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="contato" class="faq-section">
+        <div class="container">
+            <h2 class="section-title light-title center-title" data-anime="bottom">Perguntas Frequentes - F.A.Q</h2>
+            <div class="faq-container" data-anime="bottom">
+                <div class="faq-accordion">
+                    <div class="faq-item"
+                        data-answer="O prazo de entrega varia de 3 a 7 dias úteis após aprovação da arte.">
+                        <span>Qual o prazo de entrega?</span>
+                    </div>
+                    <div class="faq-item"
+                        data-answer="Trabalhamos com agendamentos. Serviços expressos têm taxa extra.">
+                        <span>Fazem bordados na hora?</span>
+                    </div>
+                    <div class="faq-item" data-answer="Nós bordamos e também podemos fornecer as peças.">
+                        <span>Vocês só bordam ou fornecem também a camiseta?</span>
+                    </div>
+                    <div class="faq-item active" data-answer="Sim, bordamos peças que o cliente traz até nós.">
+                        <span>Bordam peças levadas pelo cliente?</span>
+                    </div>
+                    <div class="faq-item" data-answer="Sim, vendemos toalhas de banho e rosto já bordadas.">
+                        <span>Vendem toalhas?</span>
+                    </div>
+                    <div class="faq-item" data-answer="Sim, temos opções para bordados em tecido plano, pique e mais.">
+                        <span>Vocês fornecem somente a matriz?</span>
+                    </div>
+                </div>
+                <div class="faq-display">
+                    <div class="faq-answer-content">
+                        <h3>Sim, bordamos peças que o cliente traz até nós.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2026 Sete Bordados. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Scroll Animado ---
+    const target = document.querySelectorAll('[data-anime]');
+    const animationClass = 'animate';
+
+    function animeScroll() {
+        const windowTop = window.pageYOffset + ((window.innerHeight * 3) / 4);
+        target.forEach(function(element) {
+            if((windowTop) > element.offsetTop) {
+                element.classList.add(animationClass);
+            }
+        })
+    }
+
+    animeScroll();
+
+    if(target.length) {
+        window.addEventListener('scroll', function() {
+            animeScroll();
+        })
+    }
+
+    // --- Smooth Scroll NavBar ---
+    document.querySelectorAll('.nav-links a, .btn-primary').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetNode = document.getElementById(targetId);
+            if(targetNode) {
+                targetNode.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // --- Galeria Slider ---
+    const track = document.querySelector('.gallery-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.querySelector('.next-btn');
+    const prevButton = document.querySelector('.prev-btn');
+    
+    let currentSlideIndex = 0;
+
+    const moveToSlide = (track, currentSlide, targetSlide) => {
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        const targetIndex = slides.indexOf(targetSlide);
+        track.style.transform = 'translateX(-' + targetIndex * slideWidth + 'px)';
+        currentSlide.classList.remove('current-slide');
+        targetSlide.classList.add('current-slide');
+        currentSlideIndex = targetIndex;
+    }
+
+    nextButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        let nextSlide = currentSlide.nextElementSibling;
+        
+        // Loop back to start
+        if(!nextSlide) {
+            nextSlide = slides[0];
+        }
+        
+        moveToSlide(track, currentSlide, nextSlide);
+    });
+
+    prevButton.addEventListener('click', e => {
+        const currentSlide = track.querySelector('.current-slide');
+        let prevSlide = currentSlide.previousElementSibling;
+        
+        // Loop to end
+        if(!prevSlide) {
+            prevSlide = slides[slides.length - 1];
+        }
+        
+        moveToSlide(track, currentSlide, prevSlide);
+    });
+
+    // Handle Resize maintaining slide position
+    window.addEventListener('resize', () => {
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transform = 'translateX(-' + currentSlideIndex * slideWidth + 'px)';
+        track.style.transition = 'none'; // Prevent animation glitch on resize
+        setTimeout(() => {
+             track.style.transition = 'transform 0.5s ease-in-out';
+        }, 50);
+    });
+
+    // --- FAQ Interativo ---
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove active class from all
+            faqItems.forEach(i => i.classList.remove('active'));
+            // Add active class to clicked
+            item.classList.add('active');
+            
+            // Get answer
+            const answer = item.getAttribute('data-answer');
+            
+            const currentContent = document.querySelector('.faq-answer-content h3');
+            
+            // Re-trigger animation by cloning and replacing node
+            if (currentContent) {
+                const newContent = currentContent.cloneNode(true);
+                newContent.innerText = answer;
+                currentContent.parentNode.replaceChild(newContent, currentContent);
+            }
+        });
+    });
+});
+    </script>
+</body>
+
+</html>
